@@ -24,7 +24,11 @@
     "express": "^4.16.4",
     "flow-runtime": "^0.17.0",
     "lodash": "^4.17.11",
-    "node-hmr": "^1.2.0"
+    "node-hmr": "^1.2.0",
+    "override-require": "^1.1.1",
+    "sails-disk": "^1.1.0",
+    "sails-mysql": "^1.0.1",
+    "waterline": "^0.13.6"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

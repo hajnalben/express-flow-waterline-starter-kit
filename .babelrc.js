@@ -8,7 +8,7 @@ module.exports = {
     }],
     ["flow-runtime", {
       "assert": true,
-      "annotate": true
+      "annotate": false
     }],
     ["module-resolver", {
       "root": [paths.src],

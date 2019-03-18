@@ -12,7 +12,14 @@ if (process.env.NODE_ENV === 'development') {
   hmr(() => {
     console.log(chalk.green('[HMR] App module replaced'))
 
-    app = require('./src')
+    if (app) {
+      app.tearDown(() => {
+        app = require('./src')
+      })
+    }
+    else {
+      app = require('./src')
+    }
   }, { watchDir: './src' })
 }
 else {

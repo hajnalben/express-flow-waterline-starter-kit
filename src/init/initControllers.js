@@ -5,9 +5,9 @@ import type { ControllerMethodType } from 'routes/types'
 
 import fs from 'fs'
 import path from 'path'
-
 import t from 'flow-runtime'
 import _ from 'lodash'
+
 import paths from 'config/paths'
 
 const urlPrefix = '/api/v1/'
@@ -122,11 +122,11 @@ export default function (app: $Application) {
             returnType
           }
 
-          // $FlowHandled: method is checked
+          // $FlowIgnore: method is checked
           app[httpMethod](prefixedRoute, ...handlers)
         })
 
-        console.log(JSON.stringify(documentation, null, 2))
+        // console.log(JSON.stringify(documentation, null, 2))
       })
     })
 }
