@@ -3,7 +3,7 @@
 
 import Waterline from 'waterline'
 
-export type UserAttributesType = {|
+export type PetAttributesType = {|
   id: number
 |}
 

@@ -10,9 +10,9 @@
     "prerun:prod": "npm run build",
     "run:prod": "cross-env NODE_ENV=production node index.js",
     "build": "cross-env BABEL_ENV=production babel src -d dist",
-    "build:watch": "npm run build -- --watch",
     "lint": "eslint src",
-    "flow": "flow src"
+    "flow": "flow src",
+    "test": "jest src"
   },
   "author": "",
   "license": "ISC",

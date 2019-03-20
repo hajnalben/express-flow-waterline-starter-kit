@@ -20,7 +20,7 @@ const routes: Controller = [
   {
     method: ['GET', 'POST'],
     route: 'login/:email/:password',
-    handler: async function (param: LoginRequestType): Promise<LoginResponseType> {
+    handler: async function (payload: LoginRequestType, params): Promise<LoginResponseType> {
       console.log(await User.find())
 
       return { jwt: 'asd', userId: 123 }
