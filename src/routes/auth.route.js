@@ -16,14 +16,31 @@ export type LoginResponseType = {|
   userId: number
 |}
 
+export type UserResponseType = {|
+  id: string,
+  firstName: number,
+  lastName: number,
+|}
+
 const routes: Controller = [
   {
-    method: ['GET', 'POST'],
-    route: 'login/:email/:password',
-    handler: async function (payload: LoginRequestType, params): Promise<LoginResponseType> {
+    method: 'GET',
+    route: 'seed',
+    handler: async function (): Promise<LoginResponseType> {
+      console.log(await User.create({
+        firstName: 'asd',
+        lastName: 'qwe'
+      }))
       console.log(await User.find())
 
       return { jwt: 'asd', userId: 123 }
+    }
+  },
+  {
+    method: 'GET',
+    route: 'users/:id',
+    handler: async function (nopayload, { id }): Promise<UserResponseType> {
+      return User.findOne({ id })
     }
   }
 ]

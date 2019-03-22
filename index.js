@@ -10,11 +10,11 @@ if (process.env.NODE_ENV === 'development') {
   const hmr = require('node-hmr')
 
   hmr(() => {
-    console.log(chalk.green('[HMR] App module replaced'))
-
     if (app) {
       app.tearDown(() => {
         app = require('./src')
+
+        console.log(chalk.green('[HMR] App module replaced'))
       })
     }
     else {

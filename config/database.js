@@ -1,13 +1,16 @@
 import sailsDiskAdapter from 'sails-disk'
 
+// How to use:
+// https://sailsjs.com/documentation/concepts/extending-sails/adapters/available-adapters
+
 module.exports = {
   adapters: {
-    'disk': sailsDiskAdapter
+    'sails-disk': sailsDiskAdapter
   },
 
   datastores: {
     default: {
-      adapter: 'disk'
+      adapter: 'sails-disk'
     }
   }
 }

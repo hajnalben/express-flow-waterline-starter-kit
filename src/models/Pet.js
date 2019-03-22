@@ -1,13 +1,10 @@
 // @flow
-/* @flow-runtime ignore */
-
-import Waterline from 'waterline'
 
 export type PetAttributesType = {|
   id: number
 |}
 
-export default Waterline.Model.extend({
+export default {
   identity: 'pet',
   datastore: 'default',
   primaryKey: 'id',
@@ -27,4 +24,4 @@ export default Waterline.Model.extend({
     }
   }
 
-})
+}

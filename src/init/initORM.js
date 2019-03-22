@@ -9,32 +9,38 @@ import overrideRequire from 'override-require'
 import paths from 'config/paths'
 import database from 'config/database'
 
-// Avaible adapters
-// https://sailsjs.com/documentation/concepts/extending-sails/adapters/available-adapters#?community-supported-database-adapters
+// Store it to support teardown
+let ORM = null
 
-export default function (done: Function) {
-  const waterline = new Waterline()
-
+export default function registerOrm (done: Function) {
   const identityMapping = {}
 
-  fs.readdirSync(paths.models)
+  const models = fs.readdirSync(paths.models)
     .filter(file => file.endsWith('.js'))
-    .forEach(file => {
+    .map(file => {
       const modelPath = path.join(paths.models, file)
-      const model = require(modelPath).default
+      const modelModule = require(modelPath)
+      const model = modelModule.oldExport || modelModule.default
 
-      identityMapping[modelPath.replace('.js', '')] = model.prototype.identity
+      identityMapping[modelPath.replace('.js', '')] = model.identity
 
-      // require(path.join(paths.models, file)).default = 'waterline.collections[model.prototype.identity]'
-
-      waterline.registerModel(model)
+      return model
     })
+    .reduce((acc, curr) => ({
+      ...acc,
+      [curr.identity]: curr
+    }), {})
 
   let restoreOriginalModuleLoader
 
-  waterline.initialize(database, (err, ontology) => {
+  Waterline.start({
+    models,
+    ...database
+  }, (err, orm) => {
     if (err) {
       console.error(err)
+
+      return
     }
 
     const isOverride = (request) => {
@@ -44,10 +50,12 @@ export default function (done: Function) {
     const resolveRequest = (request) => {
       const identity = identityMapping[request.replace('.js', '')]
 
-      return ontology.collections[identity]
+      return orm.collections[identity]
     }
 
     restoreOriginalModuleLoader = overrideRequire(isOverride, resolveRequest)
+
+    ORM = orm
 
     console.log(chalk.green('ORM initialized'))
 
@@ -59,6 +67,14 @@ export default function (done: Function) {
       restoreOriginalModuleLoader()
     }
 
-    waterline.teardown(done)
+    Waterline.stop(ORM, (err) => {
+      if (err) {
+        console.error(err)
+      }
+
+      console.log(chalk.green('ORM stopped'))
+
+      done()
+    })
   }
 }
